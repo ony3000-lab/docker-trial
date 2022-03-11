@@ -8,14 +8,14 @@ Docker와 Docker Compose 써보기
 `Dockerfile`이 있는 상태에서 아래 명령어를 실행.
 
 ```bash
-$ docker build -t (Image 이름) .
+$ docker build -t (image 이름) .
 $ docker build -t getting-started .
 ```
 
 ### App Container 실행
 
 ```bash
-$ docker run -dp (host의 포트 번호):(container의 포트 번호) (빌드에 사용한 Image 이름)
+$ docker run -dp (host의 포트 번호):(container의 포트 번호) (image 이름)
 $ docker run -dp 3000:3000 getting-started
 ```
 
@@ -41,6 +41,8 @@ $ docker rm (제거하려는 container의 ID)
 
 ### Container에서 명령어 실행하기
 
+다음 두 가지 방법 중 하나를 사용한다.
+
 1. docker desktop의 대시보드에서 container의 CLI 아이콘 클릭 &rarr; 생성되는 터미널 창에서 명령어 실행
 2. container ID를 사용해서 로컬 터미널 창에서 명령어 실행
 
@@ -65,7 +67,7 @@ $ docker volume create (volume 이름)
 ### Volume과 함께 App Container 실행
 
 ```bash
-$ docker run -dp (host의 포트 번호):(container의 포트 번호) -v (생성한 volume 이름):(volume을 mount할 절대경로) (빌드에 사용한 Image 이름)
+$ docker run -dp (host의 포트 번호):(container의 포트 번호) -v (생성한 volume 이름):(volume을 mount할 container의 절대경로) (image 이름)
 $ docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started
 ```
 
