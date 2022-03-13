@@ -100,3 +100,92 @@ $ docker run -dp 3000:3000 \
     node:12-alpine \
     sh -c "yarn install && yarn run dev"
 ```
+
+### Container Networking
+
+컨테이너는 기본적으로 격리되어 실행되며, 같은 시스템의 다른 프로세스나 컨테이너와 통신할 수 없다. 다른 프로세스나 컨테이너와 통신하려면, 같은 네트워크 안에 소속되게 해야 한다.
+
+### Network 생성하기
+
+```bash
+$ docker network create (network 이름)
+```
+
+### Network와 함께 MySQL Container 실행
+
+```bash
+$ docker run -d \
+    --network (network 이름) \
+    --network-alias (network 안에서 사용될, container의 hostname) \
+    -v (volume 설정) \
+    -e MYSQL_ROOT_PASSWORD=(mysql root 계정의 비밀번호) \
+    -e MYSQL_DATABASE=(튜토리얼 앱에서 사용할 database 이름) \
+    mysql:5.7
+$ docker run -d \
+    --network todo-app \
+    --network-alias mysql \
+    -v todo-mysql-data:/var/lib/mysql \
+    -e MYSQL_ROOT_PASSWORD=secret \
+    -e MYSQL_DATABASE=todos \
+    mysql:5.7
+```
+
+### MySQL Container 접속하기
+
+```bash
+$ docker exec -it (mysql container의 ID) mysql -u root -p
+```
+
+### Container의 내부 IP 확인하는 방법
+
+```bash
+$ docker run -it --network (내부 IP를 확인하려는 container가 소속된 network의 이름) nicolaka/netshoot
+```
+
+`nicolaka/netshoot` container를 실행한 후, `dig mysql`을 입력하면 다음과 같은 형태의 출력을 확인할 수 있다.
+
+```bash
+; <<>> DiG 9.16.22 <<>> mysql
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 7876
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;mysql.                         IN      A
+
+;; ANSWER SECTION:
+mysql.                  600     IN      A       (mysql container의 내부 IP)
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.11#53(127.0.0.11)
+;; WHEN: Sun Mar 13 04:05:36 UTC 2022
+;; MSG SIZE  rcvd: 44
+```
+
+위에서 mysql container를 실행할 때 `network alias`를 사용했기 때문에, 튜토리얼에서는 내부 IP를 몰라도 상관없다.
+
+### MySQL과 함께 App Container 실행
+
+```bash
+$ docker run -dp (host의 포트 번호):(container의 포트 번호) \
+    -w (명령이 실행될 container의 절대경로) \
+    -v (host의 디렉토리 경로):(volume을 mount할 container의 절대경로) \
+    --network (network 이름) \
+    -e MYSQL_HOST=(mysql container의 network alias) \
+    -e MYSQL_USER=(mysql 계정) \
+    -e MYSQL_PASSWORD=(mysql 계정의 비밀번호) \
+    -e MYSQL_DB=(튜토리얼 앱에서 사용할 database 이름) \
+    (image 이름) \
+    (working directory에서 실행 할 명령어)
+$ docker run -dp 3000:3000 \
+    -w /app \
+    -v "$(pwd):/app" \
+    --network todo-app \
+    -e MYSQL_HOST=mysql \
+    -e MYSQL_USER=root \
+    -e MYSQL_PASSWORD=secret \
+    -e MYSQL_DB=todos \
+    node:12-alpine \
+    sh -c "yarn install && yarn run dev"
+```
