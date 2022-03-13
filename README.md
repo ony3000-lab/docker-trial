@@ -79,3 +79,24 @@ $ docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started
 ```bash
 $ docker volume inspect (volume 이름)
 ```
+
+### Bind mount
+
+bind mount는 volume을 다루는 또다른 방식이다. bind mount를 사용하면 host의 특정 디렉토리를 container에 mount할 수 있다.
+
+### Bind mount와 함께 App Container 실행
+
+PowerShell에서 명령어 개행 시, `\` 대신 `` ` `` 를 사용해야 한다.
+
+```bash
+$ docker run -dp (host의 포트 번호):(container의 포트 번호) \
+    -w (명령이 실행될 container의 절대경로) \
+    -v (host의 디렉토리 경로):(volume을 mount할 container의 절대경로) \
+    (image 이름) \
+    (working directory에서 실행 할 명령어)
+$ docker run -dp 3000:3000 \
+    -w /app \
+    -v "$(pwd):/app" \
+    node:12-alpine \
+    sh -c "yarn install && yarn run dev"
+```
