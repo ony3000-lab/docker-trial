@@ -30,13 +30,13 @@ $ docker ps
 `docker ps`를 통해 container ID를 확인할 수 있음.
 
 ```bash
-$ docker stop (중단하려는 container의 ID)
+$ docker stop (container ID)
 ```
 
 ### 중단된 Container 제거하기
 
 ```bash
-$ docker rm (제거하려는 container의 ID)
+$ docker rm (container ID)
 ```
 
 ### Container에서 명령어 실행하기
@@ -47,7 +47,7 @@ $ docker rm (제거하려는 container의 ID)
 2. container ID를 사용해서 로컬 터미널 창에서 명령어 실행
 
 ```bash
-$ docker exec (container의 ID) (명령어)
+$ docker exec (container ID) (명령어)
 ```
 
 ### Container의 파일 시스템
@@ -67,7 +67,7 @@ $ docker volume create (volume 이름)
 ### Volume과 함께 App Container 실행
 
 ```bash
-$ docker run -dp (host의 포트 번호):(container의 포트 번호) -v (생성한 volume 이름):(volume을 mount할 container의 절대경로) (image 이름)
+$ docker run -dp (host의 포트 번호):(container의 포트 번호) -v (volume 이름):(volume을 mount할 container의 절대경로) (image 이름)
 $ docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started
 ```
 
@@ -93,7 +93,7 @@ $ docker run -dp (host의 포트 번호):(container의 포트 번호) \
     -w (명령이 실행될 container의 절대경로) \
     -v (host의 디렉토리 경로):(volume을 mount할 container의 절대경로) \
     (image 이름) \
-    (working directory에서 실행 할 명령어)
+    (working directory에서 실행할 명령어)
 $ docker run -dp 3000:3000 \
     -w /app \
     -v "$(pwd):/app" \
@@ -119,7 +119,7 @@ $ docker run -d \
     --network-alias (network 안에서 사용될, container의 hostname) \
     -v (volume 설정) \
     -e MYSQL_ROOT_PASSWORD=(mysql root 계정의 비밀번호) \
-    -e MYSQL_DATABASE=(튜토리얼 앱에서 사용할 database 이름) \
+    -e MYSQL_DATABASE=(앱에서 사용할 database의 이름) \
     mysql:5.7
 $ docker run -d \
     --network todo-app \
@@ -175,9 +175,9 @@ $ docker run -dp (host의 포트 번호):(container의 포트 번호) \
     -e MYSQL_HOST=(mysql container의 network alias) \
     -e MYSQL_USER=(mysql 계정) \
     -e MYSQL_PASSWORD=(mysql 계정의 비밀번호) \
-    -e MYSQL_DB=(튜토리얼 앱에서 사용할 database 이름) \
+    -e MYSQL_DB=(앱에서 사용할 database의 이름) \
     (image 이름) \
-    (working directory에서 실행 할 명령어)
+    (working directory에서 실행할 명령어)
 $ docker run -dp 3000:3000 \
     -w /app \
     -v "$(pwd):/app" \
