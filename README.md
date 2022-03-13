@@ -189,3 +189,29 @@ $ docker run -dp 3000:3000 \
     node:12-alpine \
     sh -c "yarn install && yarn run dev"
 ```
+
+### Compose file을 기반으로 container를 생성하고 실행하기
+
+compose file의 경로가 `./docker-compose.yml`이 아닐 경우, `-f` 옵션으로 경로를 명시해야 한다.
+
+```bash
+$ docker-compose up -d
+```
+
+### Compose file을 기반으로 실행한 container의 로그 확인
+
+```bash
+# 모든 container의 로그 확인
+$ docker-compose logs -f
+
+# 개별 container의 로그 확인
+$ docker-compose logs -f (compose file에 정의된 service의 이름)
+```
+
+### Compose file을 기반으로 실행한 container와 network를 중단하고 제거하기
+
+기본적으로 이름있는 volume은 제거되지 않는다. `--volumes` 옵션을 추가해야 제거된다.
+
+```bash
+$ docker-compose down
+```
