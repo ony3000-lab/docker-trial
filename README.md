@@ -215,3 +215,7 @@ $ docker-compose logs -f (compose file에 정의된 service의 이름)
 ```bash
 $ docker-compose down
 ```
+
+### Dockerfile의 Layer caching 원리(?)
+
+- [Dockerfile cache 및 작성 Tip](https://4orty.tistory.com/21)
