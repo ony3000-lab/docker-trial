@@ -222,6 +222,8 @@ $ docker-compose down
 
 ### GitHub Action에서 제공하는 `Deploy to Amazon ECS` 템플릿을 사용해서 배포하는 방법
 
+ECS의 월 요금(약 38.5 USD)이 생각보다 비싸서, 별로 좋은 방법은 아닌 듯.
+
 1. docker image를 저장할 ECR repository(저장소)를 생성한다.
     - 일반 설정
         - 표시 여부 설정: private
@@ -238,4 +240,6 @@ $ docker-compose down
     - JSON 파일의 경로와 컨테이너 이름(JSON 파일의 `containerDefinitions` 부분 참고)은 환경변수 `ECS_TASK_DEFINITION`, `CONTAINER_NAME`에 각각 할당한다.
 
 4. IAM user를 생성하고, `AWS_ACCESS_KEY_ID`와 `AWS_SECRET_ACCESS_KEY`를 GitHub Action secret으로 추가한다.
-    - 기본적으로 `AmazonEC2ContainerRegistryFullAccess` 권한이 있어야 한다. (추가 권한에 대해서는 확인 필요)
+    - 기본적으로 다음 두 가지 권한이 필요하다.
+        1. `AmazonEC2ContainerRegistryPowerUser` 또는 `AmazonEC2ContainerRegistryFullAccess`
+        2. `AmazonECS_FullAccess`
