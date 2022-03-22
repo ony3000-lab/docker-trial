@@ -219,3 +219,23 @@ $ docker-compose down
 ### Dockerfile의 Layer caching 원리(?)
 
 - [Dockerfile cache 및 작성 Tip](https://4orty.tistory.com/21)
+
+### GitHub Action에서 제공하는 `Deploy to Amazon ECS` 템플릿을 사용해서 배포하는 방법
+
+1. docker image를 저장할 ECR repository(저장소)를 생성한다.
+    - 일반 설정
+        - 표시 여부 설정: private
+        - 리포지토리 이름: 적당히 입력
+        - 태그 변경 불가능: 비활성화
+    - 다른 설정들은 건드리지 않고 생성 완료한다.
+    - 생성된 저장소의 이름과 지역(예: ap-northeast-2)은 환경변수 `ECR_REPOSITORY`, `AWS_REGION`에 각각 할당한다.
+
+2. ECS task definition(작업 정의), ECS cluster(클러스터), ECS service(서비스)를 생성한다.
+    - 생성 예시: [Getting Started guide](https://ap-northeast-2.console.aws.amazon.com/ecs/home?region=ap-northeast-2#/firstRun) 참고
+    - 생성된 서비스 이름과 클러스터 이름은 환경변수 `ECS_SERVICE`, `ECS_CLUSTER`에 각각 할당한다.
+
+3. JSON 포맷의 ECS task definition(작업 정의)을 이 저장소에 추가한다.
+    - JSON 파일의 경로와 컨테이너 이름(JSON 파일의 `containerDefinitions` 부분 참고)은 환경변수 `ECS_TASK_DEFINITION`, `CONTAINER_NAME`에 각각 할당한다.
+
+4. IAM user를 생성하고, `AWS_ACCESS_KEY_ID`와 `AWS_SECRET_ACCESS_KEY`를 GitHub Action secret으로 추가한다.
+    - 기본적으로 `AmazonEC2ContainerRegistryFullAccess` 권한이 있어야 한다. (추가 권한에 대해서는 확인 필요)
