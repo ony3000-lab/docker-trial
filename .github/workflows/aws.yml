@@ -29,7 +29,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - cicd-github-actions
+      - test
 
 env:
   # set this to your preferred AWS region, e.g. us-west-1
