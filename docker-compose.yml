@@ -10,7 +10,7 @@ services:
     # 설정값의 순서도 자유롭게 선택할 수 있다.
 
     image: node:12-alpine
-    command: sh -c "yarn install && yarn run dev"
+    command: sh -c "pnpm install && pnpm run dev"
     ports:
       # 포트 번호 설정은 짧은 문법 또는 긴 문법을 사용할 수 있다.
       # short syntax: https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-1
