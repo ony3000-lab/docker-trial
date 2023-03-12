@@ -98,7 +98,7 @@ $ docker run -dp 3000:3000 \
     -w /app \
     -v "$(pwd):/app" \
     node:12-alpine \
-    sh -c "yarn install && yarn run dev"
+    sh -c "pnpm install && pnpm run dev"
 ```
 
 ### Container Networking
@@ -187,7 +187,7 @@ $ docker run -dp 3000:3000 \
     -e MYSQL_PASSWORD=secret \
     -e MYSQL_DB=todos \
     node:12-alpine \
-    sh -c "yarn install && yarn run dev"
+    sh -c "pnpm install && pnpm run dev"
 ```
 
 ### Compose file을 기반으로 container를 생성하고 실행하기
